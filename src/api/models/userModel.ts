@@ -1,7 +1,14 @@
-import mongoose from 'mongoose';
+import mongoose, { Document, Schema } from 'mongoose';
 import bcrypt from 'bcrypt';
+import { IPokemon } from './pokemonModel';
 
-const userSchema = new mongoose.Schema({
+export interface IUser extends Document {
+    username: string;
+    password: string;
+    favorites: IPokemon[];
+}
+
+const userSchema: Schema<IUser> = new mongoose.Schema({
     username: {
         type: String,
         required: true,
@@ -24,7 +31,6 @@ userSchema.pre('save', async function (next) {
     next();
 });
 
-
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model<IUser>('User', userSchema);
 
 export default User;
