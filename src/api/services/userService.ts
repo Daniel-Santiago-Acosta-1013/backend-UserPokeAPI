@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import User, { IUser } from '../models/userModel';
+import globalEnvs from '../../utils/globals';
 
 interface CreateUserInput {
     username: string;
@@ -24,7 +25,7 @@ export const authenticateUser = async (username: string, password: string): Prom
         throw new Error('Invalid credentials');
     }
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+    const token = jwt.sign({ id: user._id }, globalEnvs.JWT_SECRET);
     return token;
 };
 
