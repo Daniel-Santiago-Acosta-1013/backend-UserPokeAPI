@@ -28,3 +28,25 @@ export const getUsers = async (req: Request, res: Response) => {
         handleErrorResponse(error, res);
     }
 };
+
+export const addFavoritePokemon = async (req: Request, res: Response) => {
+    try {
+        const userId = req.user?.id; // Asumiendo que el id del usuario está en req.user
+        const pokemonName = req.body.pokemonName;
+
+        const user = await userService.addPokemonToFavorites(userId, pokemonName);
+        res.status(200).send(user);
+    } catch (error) {
+        handleErrorResponse(error, res);
+    }
+};
+
+
+export const getFavoritePokemons = async (req: Request, res: Response) => {
+    try {
+        const favorites = await userService.getFavoritePokemons(req.params.iduser);
+        res.send(favorites);
+    } catch (error) {
+        handleErrorResponse(error, res);
+    }
+};
