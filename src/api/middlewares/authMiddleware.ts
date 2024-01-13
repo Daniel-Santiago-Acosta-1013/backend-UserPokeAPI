@@ -9,7 +9,7 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
         }
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as any;
-        res.locals.userId = decoded.id; // Almacenar el ID del usuario en res.locals
+        res.locals.userId = decoded.id;
         next();
     } catch (error) {
         res.status(400).send('Invalid token.');
