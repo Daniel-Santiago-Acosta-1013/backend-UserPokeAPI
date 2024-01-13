@@ -36,26 +36,34 @@ export const getAllUsers = async (): Promise<IUser[]> => {
 };
 
 export const addPokemonToFavorites = async (userId: string, pokemonName: string): Promise<IUser | null> => {
-    const response = await axios.get(`https://pokeapi.co/api/v2/pokemon-form/${pokemonName}`);
-    const { name, types, sprites } = response.data;
+    try {
+        const response = await axios.get(`https://pokeapi.co/api/v2/pokemon-form/${pokemonName}`);
 
-    let pokemon = await Pokemon.findOne({ name });
-    if (!pokemon) {
-        pokemon = new Pokemon({ 
-            name, 
-            type: types[0].type.name, 
-            sprite: sprites.front_default 
-        });
-        await pokemon.save();
+        const { name, types, sprites } = response.data;
+        let pokemon = await Pokemon.findOne({ name });
+
+        if (!pokemon) {
+            pokemon = new Pokemon({
+                name,
+                type: types[0].type.name,
+                sprite: sprites.front_default
+            });
+            await pokemon.save();
+        }
+
+        const user = await User.findById(userId);
+        if (user && !user.favorites.includes(pokemon._id)) {
+            user.favorites.push(pokemon);
+            await user.save();
+        }
+
+        return user;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response?.status === 404) {
+            throw new Error(`Pokemon '${pokemonName}' does not exist`);
+        }
+        throw error;
     }
-
-    const user = await User.findById(userId);
-    if (user && !user.favorites.includes(pokemon._id)) {
-        user.favorites.push(pokemon);
-        await user.save();
-    }
-
-    return user;
 };
 
 export const getFavoritePokemons = async (userId: string): Promise<IPokemon[]> => {
