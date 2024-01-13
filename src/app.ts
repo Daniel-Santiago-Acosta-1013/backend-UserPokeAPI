@@ -2,7 +2,6 @@ import express from 'express';
 import mongoose from 'mongoose';
 import userRoutes from './api/routes/userRoutes';
 import globalEnvs from './utils/globals';
-import pokemonRoutes from './api/routes/pokemonRoutes';
 import { errorHandler } from './utils/errorHandler';
 
 const app = express();
@@ -13,7 +12,6 @@ mongoose.connect(globalEnvs.MONGODB_URI as string)
   .catch(err => console.log(err));
 
 app.use('/users', userRoutes);
-app.use('/pokemon', pokemonRoutes);
 
 app.use(errorHandler);
 
