@@ -41,7 +41,6 @@ export const addFavoritePokemon = async (req: Request, res: Response) => {
     }
 };
 
-
 export const getFavoritePokemons = async (req: Request, res: Response) => {
     try {
         const favorites = await userService.getFavoritePokemons(req.params.iduser);
