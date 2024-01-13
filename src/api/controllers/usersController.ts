@@ -56,3 +56,36 @@ export const getFavoritePokemons = async (req: Request, res: Response) => {
         handleErrorResponse(error, res);
     }
 };
+
+export const removeFavoritePokemon = async (req: Request, res: Response) => {
+    try {
+        const userId = res.locals.userId;
+        const pokemonId = req.params.pokemonId;
+
+        if (!userId) {
+            return res.status(401).send("User not authenticated");
+        }
+
+        const userResult = await userService.removePokemonFromFavorites(userId, pokemonId);
+        res.status(200).send(userResult);
+    } catch (error) {
+        handleErrorResponse(error, res);
+    }
+};
+
+export const editFavoritePokemon = async (req: Request, res: Response) => {
+    try {
+        const userId = res.locals.userId;
+        const pokemonId = req.params.pokemonId;
+        const { name, type } = req.body;
+
+        if (!userId) {
+            return res.status(401).send("User not authenticated");
+        }
+
+        const updatedPokemon = await userService.editPokemonFavorite(userId, pokemonId, { name, type });
+        res.status(200).send(updatedPokemon);
+    } catch (error) {
+        handleErrorResponse(error, res);
+    }
+};
