@@ -1,15 +1,13 @@
 import express from 'express';
-import mongoose from 'mongoose';
+import connectDB from './config/db';
 import userRoutes from './api/routes/userRoutes';
-import globalEnvs from './utils/globals';
 import { errorHandler } from './utils/errorHandler';
 
 const app = express();
 app.use(express.json());
 
-mongoose.connect(globalEnvs.MONGODB_URI as string)
-  .then(() => console.log('MongoDB Connected'))
-  .catch(err => console.log(err));
+// Connect to the database
+connectDB();
 
 app.use('/users', userRoutes);
 

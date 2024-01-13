@@ -31,7 +31,7 @@ export const getUsers = async (req: Request, res: Response) => {
 
 export const addFavoritePokemon = async (req: Request, res: Response) => {
     try {
-        const userId = req.user?.id; // Asumiendo que el id del usuario está en req.user
+        const userId = req.user?.id;
         const pokemonName = req.body.pokemonName;
 
         const user = await userService.addPokemonToFavorites(userId, pokemonName);

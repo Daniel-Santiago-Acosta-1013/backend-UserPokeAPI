@@ -1,14 +1,14 @@
 import mongoose from 'mongoose';
+import globalEnvs from '../utils/globals';
 
 const connectDB = async () => {
     try {
-        await mongoose.connect(process.env.MONGODB_URI, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        });
+        await mongoose.connect(globalEnvs.MONGODB_URI);
         console.log('MongoDB Connected');
     } catch (error) {
-        console.error('MongoDB Connection Failed:', error.message);
+        if (error instanceof Error) {
+            console.error('MongoDB Connection Failed:', error);
+        }
     }
 };
 
