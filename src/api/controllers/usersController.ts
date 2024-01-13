@@ -2,6 +2,11 @@ import { Request, Response } from 'express';
 import * as userService from '../services/userService';
 import { handleErrorResponse } from '../../utils/errorHandler';
 
+/**
+ * Crea un nuevo usuario.
+ * @param {Request} req - Objeto de solicitud Express.
+ * @param {Response} res - Objeto de respuesta Express.
+ */
 export const createUser = async (req: Request, res: Response) => {
     try {
         const user = await userService.createUser(req.body);
@@ -11,6 +16,11 @@ export const createUser = async (req: Request, res: Response) => {
     }
 };
 
+/**
+ * Inicia sesión de un usuario existente.
+ * @param {Request} req - Objeto de solicitud Express.
+ * @param {Response} res - Objeto de respuesta Express.
+ */
 export const loginUser = async (req: Request, res: Response) => {
     try {
         const token = await userService.authenticateUser(req.body.username, req.body.password);
@@ -20,6 +30,11 @@ export const loginUser = async (req: Request, res: Response) => {
     }
 };
 
+/**
+ * Obtiene todos los usuarios.
+ * @param {Request} req - Objeto de solicitud Express.
+ * @param {Response} res - Objeto de respuesta Express.
+ */
 export const getUsers = async (req: Request, res: Response) => {
     try {
         const users = await userService.getAllUsers();
@@ -29,6 +44,11 @@ export const getUsers = async (req: Request, res: Response) => {
     }
 };
 
+/**
+ * Añade un Pokémon favorito al usuario autenticado.
+ * @param {Request} req - Objeto de solicitud Express.
+ * @param {Response} res - Objeto de respuesta Express.
+ */
 export const addFavoritePokemon = async (req: Request, res: Response) => {
     try {
         const userId = res.locals.userId;
@@ -48,6 +68,11 @@ export const addFavoritePokemon = async (req: Request, res: Response) => {
     }
 };
 
+/**
+ * Obtiene los Pokémones favoritos de un usuario específico.
+ * @param {Request} req - Objeto de solicitud Express.
+ * @param {Response} res - Objeto de respuesta Express.
+ */
 export const getFavoritePokemons = async (req: Request, res: Response) => {
     try {
         const favorites = await userService.getFavoritePokemons(req.params.iduser);
@@ -57,6 +82,11 @@ export const getFavoritePokemons = async (req: Request, res: Response) => {
     }
 };
 
+/**
+ * Elimina un Pokémon favorito de la lista del usuario autenticado.
+ * @param {Request} req - Objeto de solicitud Express.
+ * @param {Response} res - Objeto de respuesta Express.
+ */
 export const removeFavoritePokemon = async (req: Request, res: Response) => {
     try {
         const userId = res.locals.userId;
@@ -73,6 +103,13 @@ export const removeFavoritePokemon = async (req: Request, res: Response) => {
     }
 };
 
+/**
+ * Edita los detalles de un Pokémon favorito del usuario autenticado.
+ * @param {Request} req - Objeto de solicitud Express.
+ * @param {Response} res - Objeto de respuesta Express.
+ * @param {string} pokemonId - ID del Pokémon a editar.
+ * @param {Object} body - Datos a editar del Pokémon (name, type).
+ */
 export const editFavoritePokemon = async (req: Request, res: Response) => {
     try {
         const userId = res.locals.userId;
