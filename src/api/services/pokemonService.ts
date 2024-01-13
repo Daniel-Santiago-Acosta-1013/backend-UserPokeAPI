@@ -3,7 +3,7 @@ import User, { IUser } from '../models/userModel';
 import Pokemon, { IPokemon } from '../models/pokemonModel';
 
 export const fetchPokemon = async (pokemonName: string): Promise<any> => {
-    const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`);
+    const response = await axios.get(`https://pokeapi.co/api/v2/pokemon-form/${pokemonName}`);
     return response.data;
 };
 
