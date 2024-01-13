@@ -31,11 +31,14 @@ export const getUsers = async (req: Request, res: Response) => {
 
 export const addFavoritePokemon = async (req: Request, res: Response) => {
     try {
-        const userId = req.user?.id;
-        const pokemonName = req.body.pokemonName;
+        const userId = res.locals.userId; // Acceder al ID del usuario desde res.locals
+        if (!userId) {
+            return res.status(401).send("User not authenticated");
+        }
 
-        const user = await userService.addPokemonToFavorites(userId, pokemonName);
-        res.status(200).send(user);
+        const pokemonName = req.body.pokemonName;
+        const userResult = await userService.addPokemonToFavorites(userId, pokemonName);
+        res.status(200).send(userResult);
     } catch (error) {
         handleErrorResponse(error, res);
     }
