@@ -5,11 +5,6 @@ import Pokemon, { IPokemon } from '../models/pokemonModel';
 import globalEnvs from '../../utils/globals';
 import axios from 'axios';
 
-interface CreateUserInput {
-    username: string;
-    password: string;
-}
-
 /**
  * Crea un nuevo usuario.
  * @param {CreateUserInput} userData - Datos del usuario a crear.
