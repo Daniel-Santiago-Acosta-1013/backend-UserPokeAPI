@@ -15,8 +15,18 @@ interface CreateUserInput {
  * @param {CreateUserInput} userData - Datos del usuario a crear.
  * @returns {Promise<IUser>} El usuario creado.
  */
-export const createUser = async (userData: CreateUserInput): Promise<IUser> => {
-    const user = new User(userData);
+export const createUser = async (userData: { username: string, password: string }): Promise<IUser> => {
+    const existingUser = await User.findOne({ username: userData.username });
+    if (existingUser) {
+        throw new Error('User already exists');
+    }
+
+    const hashedPassword = await bcrypt.hash(userData.password, 8);
+    const user = new User({
+        username: userData.username,
+        password: hashedPassword
+    });
+
     await user.save();
     return user;
 };
@@ -35,7 +45,7 @@ export const authenticateUser = async (username: string, password: string): Prom
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-        throw new Error('Invalid credentials');
+        throw new Error('Incorrect password');
     }
 
     const token = jwt.sign({ id: user._id }, globalEnvs.JWT_SECRET);

@@ -26,7 +26,7 @@ export const loginUser = async (req: Request, res: Response) => {
         const { token, userId } = await userService.authenticateUser(req.body.username, req.body.password);
         res.send({ token, userId });
     } catch (error) {
-        handleErrorResponse(error, res);
+        handleErrorResponse(error, res, 401);
     }
 };
 
