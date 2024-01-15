@@ -25,9 +25,9 @@ export const createUser = async (userData: CreateUserInput): Promise<IUser> => {
  * Autentica a un usuario y genera un token JWT.
  * @param {string} username - Nombre de usuario.
  * @param {string} password - Contraseña del usuario.
- * @returns {Promise<string>} Token JWT si la autenticación es exitosa.
+ * @returns {Promise<{ token: string, userId: string }>} Token JWT y ID del usuario si la autenticación es exitosa.
  */
-export const authenticateUser = async (username: string, password: string): Promise<string> => {
+export const authenticateUser = async (username: string, password: string): Promise<{ token: string, userId: string }> => {
     const user = await User.findOne({ username });
     if (!user) {
         throw new Error('User not found');
@@ -39,7 +39,7 @@ export const authenticateUser = async (username: string, password: string): Prom
     }
 
     const token = jwt.sign({ id: user._id }, globalEnvs.JWT_SECRET);
-    return token;
+    return { token, userId: user._id.toString() };
 };
 
 /**
