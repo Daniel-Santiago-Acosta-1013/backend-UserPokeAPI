@@ -1,5 +1,4 @@
 import mongoose, { Document, Schema } from 'mongoose';
-import bcrypt from 'bcrypt';
 import { IPokemon } from './pokemonModel';
 
 export interface IUser extends Document {
